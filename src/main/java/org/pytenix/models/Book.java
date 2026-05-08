@@ -13,7 +13,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Book implements Serializable {
 
-    private String id, title;
+    private int id;
+    private String title;
     private int publicationYear;
     private BookStatus bookStatus;
 

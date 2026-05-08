@@ -11,6 +11,7 @@ import java.util.Set;
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class Patron implements Serializable {
 
-    private String id,name;
+    private int id;
+    private String name;
     private Set<String> booksCheckedOut;
 }
