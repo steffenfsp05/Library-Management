@@ -1,4 +1,4 @@
-# Libary Management Software
+# Library Management Software
 
 A robust, console-based Library Management System written in Java. This application allows users to manage books and library patrons, facilitating operations such as adding, updating, deleting, searching, 
 and handling the check-out and return processes of books.
