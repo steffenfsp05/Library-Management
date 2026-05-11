@@ -1,31 +1,27 @@
 package org.pytenix.repository.json;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.pytenix.exceptions.FileNotLoadableException;
-import org.pytenix.exceptions.FileNotSaveableException;
-import org.pytenix.models.Book;
 import org.pytenix.models.Patron;
 import org.pytenix.repository.PatronRepository;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.Writer;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * A concrete, JSON-based implementation of the {@link PatronRepository} interface.
+ * Initializes the generic repository with the specific file path and type tokens
+ * needed by Gson to deserialize a collection of Patrons.
+ */
 public class JsonPatronRepository extends JsonRepository<Patron> implements PatronRepository {
 
 
     public JsonPatronRepository(String filePath) {
-        super(filePath);
+        super(filePath, new TypeToken<HashMap<Integer, Patron>>() {
+        }.getType());
     }
 
     @Override
@@ -51,10 +47,14 @@ public class JsonPatronRepository extends JsonRepository<Patron> implements Patr
 
     @Override
     public void delete(int id) {
-        if(getCache().containsKey(id))
-        {
+        if (getCache().containsKey(id)) {
             getCache().remove(id);
             saveToFile();
         }
+    }
+
+    @Override
+    public void close() {
+        saveToFile();
     }
 }
