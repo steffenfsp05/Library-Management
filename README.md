@@ -35,3 +35,7 @@ and handling the check-out and return processes of books.
 2. Compile the source code (assuming dependencies are in a `lib` folder):
    ```bash
    javac -cp "lib/*" -d bin src/main/java/org/pytenix/**/*.java
+
+## Usage
+Once started, you will be greeted by the Main Menu. Type the number corresponding to the action you wish to perform and press Enter. 
+The application features robust error-handling, so typing invalid characters will simply prompt you to try again.
