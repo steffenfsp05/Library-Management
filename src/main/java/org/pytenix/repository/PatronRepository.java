@@ -3,17 +3,18 @@ package org.pytenix.repository;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.pytenix.models.Book;
+import org.pytenix.models.Patron;
 
 import java.util.List;
 import java.util.function.Predicate;
 
-public interface BookRepository {
+public interface PatronRepository {
 
-    @Nullable Book findById(int id);
-    List<Book> findAll();
-    List<Book> searchByTitle(String title);
-    List<Book> searchBy(Predicate<Book> predicate);
-    void save(@NotNull Book book);
+    @Nullable
+    Patron findById(int id);
+    List<Patron> findAll();
+    List<Patron> searchBy(Predicate<Patron> predicate);
+    void save(@NotNull Patron book);
     void delete(int id);
 
 }
