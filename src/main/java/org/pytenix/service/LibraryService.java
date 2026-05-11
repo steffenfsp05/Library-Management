@@ -30,6 +30,57 @@ public class LibraryService {
 
     }
 
+    /**
+     * Deletes a book with his relations
+     *
+     * @param book The book which gets deleted
+     * @return A Response boolean whether the deletion succeeded or failed.
+     */
+    public boolean deleteBook(Book book)
+    {
+        if(book == null)
+            return false;
+
+        final int id = book.getId();
+        if (book.getBookStatus().equals(BookStatus.CHECKED_OUT) && book.getInheritedUser() != null) {
+            //Removes relations
+            Patron patron = patronRepository.findById(book.getInheritedUser());
+            if (patron != null) {
+                patron.getBooksCheckedOut().remove(id);
+                patronRepository.save(patron);
+            }
+
+        }
+        bookRepository.delete(id);
+        return true;
+    }
+
+    /**
+     * Deletes a patron with his relations
+     *
+     * @param patron The patron which gets deleted
+     * @return A Response boolean whether the deletion succeeded or failed.
+     */
+    public boolean deletePatron(Patron patron)
+    {
+        if(patron == null)
+            return false;
+
+        if (!patron.getBooksCheckedOut().isEmpty()) {
+            //Removes relations
+            for (Integer bookId : patron.getBooksCheckedOut()) {
+                Book book = bookRepository.findById(bookId);
+                if (book != null) {
+                    book.setBookStatus(BookStatus.AVAILABLE);
+                    book.setInheritedUser(null);
+                    bookRepository.save(book);
+                }
+            }
+        }
+        patronRepository.delete(patron.getId());
+        return true;
+    }
+
 
     /**
      * Attempts to check out a book for a specific patron.

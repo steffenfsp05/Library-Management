@@ -3,9 +3,8 @@ package org.pytenix.console.impl;
 import org.pytenix.console.BaseMenu;
 import org.pytenix.models.Book;
 import org.pytenix.models.BookStatus;
-import org.pytenix.models.Patron;
 import org.pytenix.repository.BookRepository;
-import org.pytenix.repository.PatronRepository;
+import org.pytenix.service.LibraryService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -15,12 +14,12 @@ import java.util.Scanner;
  */
 public class BookManagementMenu extends BaseMenu {
     private final BookRepository bookRepository;
-    private final PatronRepository patronRepository;
+    private final LibraryService libraryService;
 
-    public BookManagementMenu(Scanner scanner, BookRepository bookRepository, PatronRepository patronRepository) {
+    public BookManagementMenu(Scanner scanner, BookRepository bookRepository, LibraryService libraryService) {
         super(scanner);
         this.bookRepository = bookRepository;
-        this.patronRepository = patronRepository;
+        this.libraryService = libraryService;
     }
 
     @Override
@@ -101,18 +100,10 @@ public class BookManagementMenu extends BaseMenu {
             return;
         }
 
-        if (book.getBookStatus().equals(BookStatus.CHECKED_OUT) && book.getInheritedUser() != null) {
-            //Removes relations
-            Patron patron = patronRepository.findById(book.getInheritedUser());
-            if (patron != null) {
-                patron.getBooksCheckedOut().remove(id);
-                patronRepository.save(patron);
-            }
-
-
-        }
-        bookRepository.delete(id);
-        System.out.println("Book deleted successfully!");
+        if(libraryService.deleteBook(book))
+            System.out.println("Book deleted!");
+        else
+            System.out.println("Error occurred while deleting the book!");
     }
 
     private void listAllBooks() {

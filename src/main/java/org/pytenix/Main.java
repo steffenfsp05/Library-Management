@@ -28,8 +28,8 @@ public class Main {
         LibraryService libraryService = new LibraryService(bookRepo, patronRepo);
 
         // 2. Initialize sub-menus
-        ConsoleMenu bookMenu = new BookManagementMenu(scanner, bookRepo, patronRepo);
-        ConsoleMenu patronMenu = new PatronManagementMenu(scanner, patronRepo, bookRepo);
+        ConsoleMenu bookMenu = new BookManagementMenu(scanner, bookRepo, libraryService);
+        ConsoleMenu patronMenu = new PatronManagementMenu(scanner, libraryService, patronRepo);
         ConsoleMenu libraryMenu = new LibraryOperationsMenu(scanner, libraryService);
 
         // 3. Initialize and start main menu
